@@ -91,7 +91,6 @@ public class IMC extends Application {
 		stage.setScene(scene);
 		stage.setTitle("IMC");
 		stage.show();
-		
 	}
 	
 	public static void main(String[] args) {
