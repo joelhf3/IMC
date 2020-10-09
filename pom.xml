@@ -8,13 +8,13 @@
 	<artifactId>HolaMundoFX</artifactId>
 	<version>0.1.0</version>
 
-	<name>HolaMundoFX</name>
-	<description>Template JavaFX</description>
+	<name>IMC</name>
+	<description>Actividad IMC</description>
 
 	<properties>
 		<maven.compiler.target>14</maven.compiler.target>
 		<maven.compiler.source>14</maven.compiler.source>
-		<exec.mainClass>dad.javafx.holamundo.Main</exec.mainClass>
+		<exec.mainClass>dad.javafx.IMC</exec.mainClass>
 	</properties>
 
 	<dependencies>
