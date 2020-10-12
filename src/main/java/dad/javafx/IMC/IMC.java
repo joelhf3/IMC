@@ -1,7 +1,13 @@
 package dad.javafx.IMC;
 
 import javafx.application.Application;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -51,16 +57,29 @@ public class IMC extends Application {
 		textAltura.setAlignment(Pos.CENTER);
 		
 		labelCm = new Label();
-		labelCm.setText("cm");
+		labelCm.setText("m");
 
 		labelImc = new Label();
 		labelImc.setText("IMC:");
 		
 		labelResultado = new Label();
-		labelResultado.setText("(peso * altura^ 2)");
+		labelResultado.setText("(peso / altura^ 2)");
 		
 		labelEscala = new Label();
 		labelEscala.setText("Bajo peso | Normal | Sobrepeso | Obeso");
+		
+		DoubleProperty peso = new SimpleDoubleProperty();
+		DoubleProperty altura = new SimpleDoubleProperty();
+		DoubleProperty imc = new SimpleDoubleProperty();
+		
+		StringConverter<? extends Number> converter = new DoubleStringConverter();
+		
+		imc.bind(peso.divide(altura.multiply(altura)));
+			
+		Bindings.bindBidirectional(textPeso.textProperty(), peso, (StringConverter<Number>) converter);
+		Bindings.bindBidirectional(textAltura.textProperty(), altura, (StringConverter<Number>) converter);
+		
+		labelResultado.textProperty().bind(imc.asString());
 		
 		HBox hboxPeso = new HBox();
 		hboxPeso.setSpacing(5);
