@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.NumberStringConverter;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -32,7 +33,6 @@ public class IMC extends Application {
 	private Label labelCm;
 	private Label labelImc;
 	private Label labelResultado;
-	private Label labelEscala;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -63,23 +63,21 @@ public class IMC extends Application {
 		labelImc.setText("IMC:");
 		
 		labelResultado = new Label();
-		labelResultado.setText("(peso / altura^ 2)");
-		
-		labelEscala = new Label();
-		labelEscala.setText("Bajo peso | Normal | Sobrepeso | Obeso");
 		
 		DoubleProperty peso = new SimpleDoubleProperty();
 		DoubleProperty altura = new SimpleDoubleProperty();
 		DoubleProperty imc = new SimpleDoubleProperty();
 		
-		StringConverter<? extends Number> converter = new DoubleStringConverter();
+		NumberStringConverter converter = new NumberStringConverter();	
+			
+		textPeso.textProperty().bindBidirectional(peso, converter);
+		textAltura.textProperty().bindBidirectional(altura, converter);
 		
 		imc.bind(peso.divide(altura.multiply(altura)));
-			
-		Bindings.bindBidirectional(textPeso.textProperty(), peso, (StringConverter<Number>) converter);
-		Bindings.bindBidirectional(textAltura.textProperty(), altura, (StringConverter<Number>) converter);
 		
-		labelResultado.textProperty().bind(imc.asString());
+		labelResultado.textProperty().bindBidirectional(imc, converter);
+		
+		labelResultado.setText("(peso / altura^ 2)");
 		
 		HBox hboxPeso = new HBox();
 		hboxPeso.setSpacing(5);
@@ -96,15 +94,10 @@ public class IMC extends Application {
 		hboxImc.setAlignment(Pos.CENTER);
 		hboxImc.getChildren().addAll(labelImc, labelResultado);
 		
-		HBox hboxEscala = new HBox();
-		hboxEscala.setSpacing(5);
-		hboxEscala.setAlignment(Pos.CENTER);
-		hboxEscala.getChildren().addAll(labelEscala);
-		
 		VBox vbox = new VBox();
 		vbox.setSpacing(5);
 		vbox.setAlignment(Pos.CENTER);
-		vbox.getChildren().addAll(hboxPeso, hboxAltura, hboxImc, hboxEscala);
+		vbox.getChildren().addAll(hboxPeso, hboxAltura, hboxImc);
 		
 		Scene scene = new Scene(vbox, 320, 200);		
 		stage.setScene(scene);
